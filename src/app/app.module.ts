@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import { AppRouters } from './app.routes';
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -19,6 +20,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MaterialModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    AppRouters,
   ],
   providers: [],
   bootstrap: [AppComponent]
