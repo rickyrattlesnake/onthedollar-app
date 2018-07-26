@@ -7,12 +7,23 @@
            fxLayout.gt-md="row"
            fxLayoutAlign="space-around center"
            class="content">
-        <div class="blocks">
+        <div class="blocks"
+             *ngIf="authService.isAuthenticated()">
           <button button="submit"
                   mat-raised-button
-                  color="primary">
+                  color="primary"
+                  (click)="openDialog()">
             <mat-icon>add</mat-icon> Add Post
           </button>
+        </div>
+        <div class="blocks"
+             *ngIf="!authService.isAuthenticated()">
+          <a button
+             mat-raised-button
+             color="primary"
+             (click)="authService.login()">
+            <mat-icon>input</mat-icon>Login to Add Post
+          </a>
         </div>
       </div>
     </div>
@@ -45,7 +56,8 @@
                 <ng-container matColumnDef="delete">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <a type="button">
+                    <a (click)="deletePost(element.position)"
+                       type="button">
                       <mat-icon class="icon">delete</mat-icon>
                     </a>
                   </mat-cell>
