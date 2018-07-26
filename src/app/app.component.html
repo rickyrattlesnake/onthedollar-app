@@ -2,21 +2,26 @@
   <mat-sidenav #sidenav
                role="navigation">
     <mat-nav-list>
-      <a mat-list-item>
+      <a mat-list-item
+         *ngIf="!auth.isAuthenticated()"
+         (click)="auth.login()">
         <mat-icon class="icon">input</mat-icon>
         <span class="label">Login</span>
       </a>
       <a mat-list-item
-        routerLink="/">
+         *ngIf="auth.isAuthenticated()"
+         routerLink="/">
         <mat-icon class="icon">home</mat-icon>
         <span class="label">Home</span>
       </a>
       <a mat-list-item
-        routerLink="/dashboard">
+         routerLink="/dashboard">
         <mat-icon class="icon">dashboard</mat-icon>
         <span class="label">Dashboard</span>
       </a>
       <a mat-list-item
+         *ngIf="auth.isAuthenticated()"
+         (click)="auth.logout()"
          type="button">
         <mat-icon class="icon">input</mat-icon>
         <span class="label">LogOut</span>
@@ -26,12 +31,13 @@
   <mat-sidenav-content>
     <mat-toolbar color="primary">
       <div fxHide.gt-xs>
-        <button mat-icon-button>
+        <button mat-icon-button
+                (click)="sidenav.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
       </div>
       <div>
-        <a>
+        <a routerLink="/">
           Material Blog
         </a>
       </div>
@@ -43,13 +49,15 @@
             fxLayoutGap="20px"
             class="navigation-items">
           <li>
-            <a>
+            <a *ngIf="!auth.isAuthenticated()"
+               (click)="auth.login()">
               <mat-icon class="icon">input</mat-icon>
               <span class="label">Login</span>
             </a>
           </li>
           <li>
-            <a routerLink="/">
+            <a *ngIf="auth.isAuthenticated()"
+               routerLink="/">
               <mat-icon class="icon">home</mat-icon>
               <span class="label">Home</span>
             </a>
@@ -61,7 +69,9 @@
             </a>
           </li>
           <li>
-            <a>
+            <a *ngIf="auth.isAuthenticated()"
+               (click)="auth.logout()"
+               type="button">
               <mat-icon class="icon">input</mat-icon>
               <span class="label">LogOut</span>
             </a>
