@@ -27,4 +27,9 @@ export class ProfilesService {
     const url = `${profilesApi}/income`;
     return this.http.get<Profile[]>(url);
   }
+
+  deleteProfile(profileId: string) {
+    const url = `${profilesApi}/income/${profileId}`;
+    return this.http.delete<void>(url);
+  }
 }

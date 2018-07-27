@@ -3,7 +3,7 @@ import { DataService } from '../data/data.service';
 import { Post } from '../Post';
 import { DataSource } from '@angular/cdk/table';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { AuthService } from '../services/auth/auth.service';
 import { MatDialog } from '@angular/material';
 import { PostDialogComponent } from '../post-dialog/post-dialog.component';
@@ -22,7 +22,15 @@ export class DashboardComponent implements OnInit {
     public dialog: MatDialog) { }
 
 
-  displayedColumns = ['profileName', 'superAmount', 'grossIncome', 'taxAmount', 'netIncome', 'fiscalYear'];
+  displayedColumns = [
+    'profileName',
+    'superAmount',
+    'grossIncome',
+    'taxAmount',
+    'netIncome',
+    'fiscalYear',
+    'delete'
+  ];
   dataSource = new ProfileDataSource(this.profilesService);
 
   ngOnInit() {
@@ -41,13 +49,11 @@ export class DashboardComponent implements OnInit {
     // });
   }
 
-  deletePost(id) {
-    if (this.authService.isAuthenticated()) {
-      // this.dataService.deletePost(id);
-      this.dataSource = new ProfileDataSource(this.profilesService);
-    } else {
-      alert('Login in Before');
-    }
+  deleteProfile(profileId) {
+    this.profilesService.deleteProfile(profileId)
+      .subscribe(() => {
+        this.dataSource = new ProfileDataSource(this.profilesService);
+      });
   }
 }
 
@@ -57,7 +63,15 @@ export class ProfileDataSource extends DataSource<any> {
   }
 
   connect() {
-    return this.profilesService.getAllIncomeProfilesForCurrentUser();
+    return this.profilesService.getAllIncomeProfilesForCurrentUser()
+      .pipe(
+        catchError(error => {
+          if (error.status === 404) {
+            return [];
+          }
+          throw error;
+        })
+      );
   }
 
   disconnect() {
