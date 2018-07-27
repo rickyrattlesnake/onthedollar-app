@@ -3,9 +3,11 @@ import { DataService } from '../data/data.service';
 import { Post } from '../Post';
 import { DataSource } from '@angular/cdk/table';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthService } from '../services/auth/auth.service';
 import { MatDialog } from '@angular/material';
 import { PostDialogComponent } from '../post-dialog/post-dialog.component';
+import { ProfilesService } from '../services/profiles/profiles.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,44 +18,46 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    public dialog: MatDialog,
-    private dataService: DataService) { }
+    public profilesService: ProfilesService,
+    public dialog: MatDialog) { }
+
+
+  displayedColumns = ['profileName', 'superAmount', 'grossIncome', 'taxAmount', 'netIncome', 'fiscalYear'];
+  dataSource = new ProfileDataSource(this.profilesService);
 
   ngOnInit() {
   }
 
-  displayedColumns = ['date_posted', 'title', 'category', 'delete'];
-  dataSource = new PostDataSource(this.dataService);
-
   openDialog(): void {
-    let dialogRef = this.dialog.open(PostDialogComponent, {
-      width: '600px',
-      data: 'Add Post'
-    });
+    console.log('[-] add income profile')
+    // let dialogRef = this.dialog.open(PostDialogComponent, {
+    //   width: '600px',
+    //   data: 'Add Post'
+    // });
 
-    dialogRef.componentInstance.event.subscribe(result => {
-      this.dataService.addPost(result.data);
-      this.dataSource = new PostDataSource(this.dataService);
-    });
+    // dialogRef.componentInstance.event.subscribe(result => {
+    //   this.dataService.addPost(result.data);
+    //   this.dataSource = new ProfileDataSource(this.dataService);
+    // });
   }
 
   deletePost(id) {
     if (this.authService.isAuthenticated()) {
-      this.dataService.deletePost(id);
-      this.dataSource = new PostDataSource(this.dataService);
+      // this.dataService.deletePost(id);
+      this.dataSource = new ProfileDataSource(this.profilesService);
     } else {
       alert('Login in Before');
     }
   }
 }
 
-export class PostDataSource extends DataSource<any> {
-  constructor(private dataService: DataService) {
+export class ProfileDataSource extends DataSource<any> {
+  constructor(private profilesService: ProfilesService) {
     super();
   }
 
-  connect(): Observable<Post[]> {
-    return this.dataService.getData();
+  connect() {
+    return this.profilesService.getAllIncomeProfilesForCurrentUser();
   }
 
   disconnect() {

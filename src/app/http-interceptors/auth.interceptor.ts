@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
-  HttpEvent, HttpInterceptor, HttpHandler, HttpRequest
+  HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap, finalize } from 'rxjs/operators';
@@ -26,32 +26,5 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     return next.handle(req);
-  }
-
-  handleUnauthorizedResponse(req: HttpRequest<any>, next: HttpHandler):
-    Observable<HttpEvent<any>>  {
-    return next.handle(req)
-      .pipe(
-
-    );
-  }
-
-  httpRequestLogger(req: HttpRequest<any>, next: HttpHandler) {
-    const started = Date.now();
-    let ok: string;
-
-    return next.handle(req)
-      .pipe(
-        tap(
-          event => ok = event instanceof HttpResponse ? 'succeeded' : '',
-          error => ok = 'failed'
-        ),
-        finalize(() => {
-          const elapsed = Date.now() - started;
-          const msg = `${req.method} "${req.urlWithParams}"
-            ${ok} in ${elapsed} ms.`;
-        })
-      );
-
   }
 }

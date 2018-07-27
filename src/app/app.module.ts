@@ -34,6 +34,7 @@ import { httpInterceptorProviders } from './http-interceptors';
   ],
   entryComponents: [
     PostDialogComponent,
+    LoginDialogComponent,
   ],
   providers: [
     httpInterceptorProviders,

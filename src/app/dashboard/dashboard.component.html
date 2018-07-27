@@ -13,17 +13,8 @@
                   mat-raised-button
                   color="primary"
                   (click)="openDialog()">
-            <mat-icon>add</mat-icon> Add Post
+            <mat-icon>add</mat-icon> Add Calculation
           </button>
-        </div>
-        <div class="blocks"
-             *ngIf="!authService.isAuthenticated()">
-          <a button
-             mat-raised-button
-             color="primary"
-             (click)="authService.login()">
-            <mat-icon>input</mat-icon>Login to Add Post
-          </a>
         </div>
       </div>
     </div>
@@ -35,23 +26,35 @@
         <mat-card class="card">
           <mat-card-title fxLayout.gt-xs="row"
                           fxLayout.xs="column">
-            <h3>Recent Posts</h3>
+            <h3>Calculations</h3>
           </mat-card-title>
           <mat-card-content>
             <div class="example-container mat-elevation-z8">
               <mat-table #table
                          [dataSource]="dataSource">
-                <ng-container matColumnDef="date_posted">
-                  <mat-header-cell *matHeaderCellDef> Date Posted </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.date_posted | date: 'd/M/y'}} </mat-cell>
+                <ng-container matColumnDef="profileName">
+                  <mat-header-cell *matHeaderCellDef> Profile </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.profileName}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="title">
-                  <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
+                <ng-container matColumnDef="netIncome">
+                  <mat-header-cell *matHeaderCellDef> Net Income </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.netIncome | number:'0.2-2' }} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="category">
-                  <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
+                <ng-container matColumnDef="superAmount">
+                  <mat-header-cell *matHeaderCellDef> Superannuation </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.superAmount | number:'0.2-2' }} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="taxAmount">
+                  <mat-header-cell *matHeaderCellDef> Total Tax </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.taxAmount | number:'0.2-2' }} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="grossIncome">
+                  <mat-header-cell *matHeaderCellDef> Gross Income </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.grossIncome | number:'0.2-2' }} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="fiscalYear">
+                  <mat-header-cell *matHeaderCellDef> Gross Income </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.fiscalYear}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="delete">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
