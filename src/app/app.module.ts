@@ -10,18 +10,18 @@ import { AppRouters } from './app.routes';
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { PostDialogComponent } from './post-dialog/post-dialog.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from './http-interceptors';
+import { CreateProfileDialogComponent } from './create-profile-dialog/create-profile-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     WelcomeComponent,
     DashboardComponent,
-    PostDialogComponent,
-    LoginDialogComponent
+    LoginDialogComponent,
+    CreateProfileDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -33,8 +33,8 @@ import { httpInterceptorProviders } from './http-interceptors';
     HttpClientModule,
   ],
   entryComponents: [
-    PostDialogComponent,
     LoginDialogComponent,
+    CreateProfileDialogComponent,
   ],
   providers: [
     httpInterceptorProviders,

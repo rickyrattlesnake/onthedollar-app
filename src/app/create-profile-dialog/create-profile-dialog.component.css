@@ -1,0 +1,12 @@
+.create-profile-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-profile-form> * {
+  width: 100%;
+}
+
+.close{
+  width: 100%;
+}

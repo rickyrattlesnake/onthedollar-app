@@ -16,6 +16,19 @@ export interface Profile {
   fiscalYear: number;
 }
 
+export interface CreateProfileInput {
+  profileName: string;
+  superPercentage: number;
+  incomeAmount: number;
+  incomeIncludesSuper: boolean;
+  fiscalYear: number;
+}
+
+export interface CreateProfileResponse {
+  profileId: string;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,5 +44,10 @@ export class ProfilesService {
   deleteProfile(profileId: string) {
     const url = `${profilesApi}/income/${profileId}`;
     return this.http.delete<void>(url);
+  }
+
+  createProfile(profile: CreateProfileInput) {
+    const url = `${profilesApi}/income`;
+    return this.http.post<CreateProfileResponse>(url, profile);
   }
 }

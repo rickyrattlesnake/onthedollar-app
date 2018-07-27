@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { AuthService } from '../services/auth/auth.service';
 import { MatDialog } from '@angular/material';
-import { PostDialogComponent } from '../post-dialog/post-dialog.component';
 import { ProfilesService } from '../services/profiles/profiles.service';
+import { CreateProfileDialogComponent } from '../create-profile-dialog/create-profile-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,17 +36,16 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
   }
 
-  openDialog(): void {
+  openCreateProfileDialog(): void {
     console.log('[-] add income profile')
-    // let dialogRef = this.dialog.open(PostDialogComponent, {
-    //   width: '600px',
-    //   data: 'Add Post'
-    // });
+    let dialogRef = this.dialog.open(CreateProfileDialogComponent, {
+      width: '600px',
+      data: { title: 'Create Income Profile' }
+    });
 
-    // dialogRef.componentInstance.event.subscribe(result => {
-    //   this.dataService.addPost(result.data);
-    //   this.dataSource = new ProfileDataSource(this.dataService);
-    // });
+    dialogRef.componentInstance.event.subscribe(result => {
+      this.dataSource = new ProfileDataSource(this.profilesService);
+    });
   }
 
   deleteProfile(profileId) {
