@@ -38,6 +38,11 @@ export class AuthService {
     return token != null && token !== '';
   }
 
+  getSessionToken() {
+    const token = localStorage.getItem('access_token');
+    return token != null && token !== '' ? token : null;
+  }
+
   private setSession({
     accessToken,
   }): void {

@@ -13,6 +13,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { PostDialogComponent } from './post-dialog/post-dialog.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { HttpClientModule } from '@angular/common/http';
+import { httpInterceptorProviders } from './http-interceptors';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,9 @@ import { HttpClientModule } from '@angular/common/http';
   entryComponents: [
     PostDialogComponent,
   ],
-  providers: [],
+  providers: [
+    httpInterceptorProviders,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
