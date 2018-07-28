@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { AuthService } from '../services/auth/auth.service';
 import { AbstractControl } from '@angular/forms';
 import { UserService } from '../services/user/user.service';
+import { flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login-dialog',
@@ -13,7 +14,6 @@ export class LoginDialogComponent {
 
   username = '';
   password = '';
-  errorMessage = '';
 
   public event: EventEmitter<any> = new EventEmitter();
 
@@ -31,13 +31,20 @@ export class LoginDialogComponent {
 
   registerUser(username: AbstractControl, password: AbstractControl) {
     if (this.validateCredentials(username, password)) {
-      this.userService.registerUser(username.value, password.value)
+      return this.userService.registerUser(username.value, password.value)
+        .pipe(
+          flatMap(evt => {
+            return this.auth.login({
+              username: this.username,
+              password: this.password
+            });
+          }),
+        )
         .subscribe(() => {
           this.event.emit({ success: true });
           this.dialogRef.close();
         }, error => {
-          console.log('[-] login error');
-          this.errorMessage = 'invalid username or password';
+          console.error('[x] registerUser ::', error);
         });
     }
 
@@ -45,7 +52,7 @@ export class LoginDialogComponent {
 
   loginUser(username: AbstractControl, password: AbstractControl) {
     if (this.validateCredentials(username, password)) {
-      this.auth.login({
+      return this.auth.login({
           username: this.username,
           password: this.password
         })
@@ -53,12 +60,12 @@ export class LoginDialogComponent {
           this.event.emit({ success: true });
           this.dialogRef.close();
         }, error => {
-          console.log('[-] login error');
-          this.event.emit({ success: false });
-          this.errorMessage = 'invalid username or password';
+          console.error('[x] loginUser ::', error);
         });
     }
   }
+
+
 
   validateCredentials(username: AbstractControl, password: AbstractControl) {
     return username.valid &&
