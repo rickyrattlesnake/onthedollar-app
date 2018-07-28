@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth/auth.service';
 import { MatDialog } from '@angular/material';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -14,32 +15,28 @@ export class AppComponent implements OnInit {
 
   constructor(
     public auth: AuthService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private router: Router) {
   }
 
   ngOnInit() {
-    console.log('ngOnInit :: app.component');
     if (!this.auth.isAuthenticated()) {
-      console.log('ngOnInit :: app.component :: not authenticated');
       this.openLoginDialog();
-      this.auth.login({ username: 'rattlesnake', password: 'tester' })
-        .subscribe(() => {
-          console.log('ngOnInit :: app.component :: logged in - rattlesnake');
-        }, err => {
-          console.error(err);
-        });
     }
   }
 
   openLoginDialog(): void {
-    let dialogRef = this.dialog
-      .open(LoginDialogComponent, {
-        width: '600px',
-        data: { title: 'Login' }
-      });
-
-    dialogRef.componentInstance.event.subscribe(result => {
-      console.log('[-] app.component :: event from login component')
-    });
+    // todo: workaround for change detection cycle bug
+    // https://github.com/angular/angular/issues/14748
+    setTimeout(() => {
+      this.dialog.open(LoginDialogComponent, {
+          width: '600px',
+          data: { title: 'Login' }
+        })
+        .componentInstance.event.subscribe(result => {
+          console.log('[-] app.component :: login successful');
+          this.router.navigateByUrl('/');
+        });
+    }, 0);
   }
 }

@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 const authApi = `${environment.apiBaseUrl}/auth`;
@@ -11,26 +11,37 @@ interface ApiPostSession {
   token: string;
 }
 
+export enum EventType {
+  LOGIN,
+  LOGOUT
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient, private router: Router) { }
+
+  events = new EventEmitter<EventType>(false);
+
+  constructor(
+    private http: HttpClient,
+    private router: Router) { }
 
   login({ username, password }) {
     const url = `${authApi}/session`;
 
     return this.http.post<ApiPostSession>(url, { username, password })
       .pipe(
-        map(event => {
+        tap(event => {
           this.setSession({ accessToken: event.token });
+          this.events.emit(EventType.LOGIN);
         }),
       );
   }
 
   logout(): void {
     localStorage.removeItem('access_token');
-    this.router.navigate(['/']);
+    this.events.emit(EventType.LOGOUT);
   }
 
   isAuthenticated(): boolean {

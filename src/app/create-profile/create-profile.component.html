@@ -1,0 +1,58 @@
+<div class="container">
+  <h1 mat-dialog-title>Create Income Tax Profile</h1>
+  <div mat-dialog-content>
+    <form class="create-profile-form"
+          (ngSubmit)="onSubmit()">
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput
+               placeholder="Profile Name"
+               type="text"
+               required
+               [(ngModel)]="profile.profileName"
+               name="profileName">
+      </mat-form-field>
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput
+               placeholder="Supperannuation (%)"
+               type="number"
+               required
+               [(ngModel)]="profile.superPercentage"
+               name="superPercentage"
+               #superModel="ngModel">
+          <mat-error *ngIf="superModel.invalid && (superModel.dirty || superModel.touched)">
+            Please enter a value
+          </mat-error>
+      </mat-form-field>
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput
+               placeholder="Income"
+               type="number"
+               required
+               [(ngModel)]="profile.incomeAmount"
+               name="income">
+      </mat-form-field>
+      <mat-slide-toggle class="example-margin"
+                        [(ngModel)]="profile.incomeIncludesSuper"
+                        name="incomeIncludesSuper"> Income include Superannuation
+      </mat-slide-toggle>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput
+               placeholder="Tax Year"
+               type="number"
+               required
+               [(ngModel)]="profile.fiscalYear"
+               name="fiscalyear">
+      </mat-form-field>
+      <button mat-raised-button
+              type="submit"
+              color="primary">Save</button>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button
+            class="close"
+            (click)="onCancel()"
+            color="warn">Cancel</button>
+  </div>
+</div>

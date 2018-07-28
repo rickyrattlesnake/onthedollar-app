@@ -9,12 +9,14 @@
            class="content">
         <div class="blocks"
              *ngIf="authService.isAuthenticated()">
-          <button button="submit"
-                  mat-raised-button
-                  color="primary"
-                  (click)="openCreateProfileDialog()">
-            <mat-icon>add</mat-icon> Add Calculation
-          </button>
+          <a routerLink="/create-profile">
+            <button button="submit"
+                    mat-raised-button
+                    color="primary">
+
+              <mat-icon>add</mat-icon> Add Calculation
+            </button>
+          </a>
         </div>
       </div>
     </div>
@@ -32,6 +34,8 @@
             <div class="example-container mat-elevation-z8">
               <mat-table #table
                          [dataSource]="dataSource">
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                 <ng-container matColumnDef="profileName">
                   <mat-header-cell *matHeaderCellDef> Profile </mat-header-cell>
                   <mat-cell *matCellDef="let element"> {{element.profileName}} </mat-cell>
@@ -53,7 +57,7 @@
                   <mat-cell *matCellDef="let element"> {{element.grossIncome | number:'0.2-2' }} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="fiscalYear">
-                  <mat-header-cell *matHeaderCellDef> Gross Income </mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef> Tax Year </mat-header-cell>
                   <mat-cell *matCellDef="let element"> {{element.fiscalYear}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="delete">
@@ -61,12 +65,10 @@
                   <mat-cell *matCellDef="let element">
                     <a (click)="deleteProfile(element.profileId)"
                        type="button">
-                      <mat-icon class="icon">delete</mat-icon>
+                      <mat-icon>delete</mat-icon>
                     </a>
                   </mat-cell>
                 </ng-container>
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
               </mat-table>
             </div>
           </mat-card-content>

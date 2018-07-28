@@ -8,20 +8,18 @@ import { FormsModule } from '@angular/forms';
 import { AppRouters } from './app.routes';
 
 import { AppComponent } from './app.component';
-import { WelcomeComponent } from './welcome/welcome.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from './http-interceptors';
-import { CreateProfileDialogComponent } from './create-profile-dialog/create-profile-dialog.component';
+import { CreateProfileComponent } from './create-profile/create-profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WelcomeComponent,
     DashboardComponent,
     LoginDialogComponent,
-    CreateProfileDialogComponent
+    CreateProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +32,7 @@ import { CreateProfileDialogComponent } from './create-profile-dialog/create-pro
   ],
   entryComponents: [
     LoginDialogComponent,
-    CreateProfileDialogComponent,
+    CreateProfileComponent,
   ],
   providers: [
     httpInterceptorProviders,

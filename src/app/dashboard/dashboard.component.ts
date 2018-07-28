@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../data/data.service';
 import { Post } from '../Post';
 import { DataSource } from '@angular/cdk/table';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { AuthService } from '../services/auth/auth.service';
-import { MatDialog } from '@angular/material';
+import { EventType as AuthEventType, AuthService } from '../services/auth/auth.service';
 import { ProfilesService } from '../services/profiles/profiles.service';
-import { CreateProfileDialogComponent } from '../create-profile-dialog/create-profile-dialog.component';
+import { CreateProfileComponent } from '../create-profile/create-profile.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +18,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     public authService: AuthService,
     public profilesService: ProfilesService,
-    public dialog: MatDialog) { }
+    private router: Router, ) { }
 
 
   displayedColumns = [
@@ -31,21 +30,21 @@ export class DashboardComponent implements OnInit {
     'fiscalYear',
     'delete'
   ];
-  dataSource = new ProfileDataSource(this.profilesService);
+  dataSource: ProfileDataSource | null = null;
 
   ngOnInit() {
-  }
+    this.authService.events
+      .subscribe(evt => {
+        if (evt === AuthEventType.LOGIN) {
+          this.dataSource = new ProfileDataSource(this.profilesService);
+        }
 
-  openCreateProfileDialog(): void {
-    console.log('[-] add income profile')
-    let dialogRef = this.dialog.open(CreateProfileDialogComponent, {
-      width: '600px',
-      data: { title: 'Create Income Profile' }
-    });
+        if (evt === AuthEventType.LOGOUT) {
+          this.dataSource = null;
+        }
+      });
 
-    dialogRef.componentInstance.event.subscribe(result => {
-      this.dataSource = new ProfileDataSource(this.profilesService);
-    });
+    this.dataSource = new ProfileDataSource(this.profilesService);
   }
 
   deleteProfile(profileId) {
