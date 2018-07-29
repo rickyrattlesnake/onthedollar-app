@@ -7,6 +7,7 @@
     "build:prod": "ng build --prod",
     "build": "ng build",
     "deploy": "echo deploying...",
+    "postinstall": "npm run build:prod",
     "watch": "ng serve",
     "lint": "ng lint",
     "test": "echo \"unit tests not implemented\"",
