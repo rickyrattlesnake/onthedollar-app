@@ -50,7 +50,15 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     const token = localStorage.getItem('access_token');
-    return token != null && token !== '';
+    if (token != null && token !== '') {
+      try {
+        const expMilliseconds = JSON.parse(atob(token.split('.')[1])).exp * 1000;
+        return expMilliseconds > Date.now();
+      } catch (error) {
+        return false;
+      }
+    }
+    return false;
   }
 
   getSessionToken() {
