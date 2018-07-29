@@ -7,10 +7,6 @@
   width: 100%;
 }
 
-button.login {
-  margin-bottom: 10px;
-}
-
-.close{
-  width: 100%;
+button {
+  width: 150px;
 }

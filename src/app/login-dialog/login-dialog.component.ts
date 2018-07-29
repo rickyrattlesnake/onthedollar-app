@@ -14,6 +14,7 @@ export class LoginDialogComponent {
 
   username = '';
   password = '';
+  errorMessage = '';
 
   public event: EventEmitter<any> = new EventEmitter();
 
@@ -30,6 +31,7 @@ export class LoginDialogComponent {
   }
 
   registerUser(username: AbstractControl, password: AbstractControl) {
+    this.setGlobalError('');
     if (this.validateCredentials(username, password)) {
       return this.userService.registerUser(username.value, password.value)
         .pipe(
@@ -51,6 +53,7 @@ export class LoginDialogComponent {
   }
 
   loginUser(username: AbstractControl, password: AbstractControl) {
+    this.setGlobalError('');
     if (this.validateCredentials(username, password)) {
       return this.auth.login({
           username: this.username,
@@ -61,16 +64,23 @@ export class LoginDialogComponent {
           this.dialogRef.close();
         }, error => {
           console.error('[x] loginUser ::', error);
+          this.setGlobalError('Incorrect Username or Password');
         });
     }
   }
-
-
 
   validateCredentials(username: AbstractControl, password: AbstractControl) {
     return username.valid &&
       password.valid &&
       username.dirty &&
       password.dirty;
+  }
+
+  setGlobalError(message: string) {
+    this.errorMessage = message;
+  }
+
+  hasGlobalError() {
+    return this.errorMessage !== '';
   }
 }

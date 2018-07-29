@@ -67,10 +67,8 @@ export class ProfilesViewComponent implements OnInit {
   getProfiles(): void {
     this.profilesService.getAllIncomeProfilesForCurrentUser()
       .subscribe(profiles => {
-        debugger;
         this.profiles = profiles;
       }, error => {
-        debugger;
         this.profiles = [];
       });
   }

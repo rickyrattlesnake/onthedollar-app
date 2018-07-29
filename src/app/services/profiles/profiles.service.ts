@@ -42,7 +42,6 @@ export class ProfilesService {
     return this.http.get<Profile[]>(url)
       .pipe(
         catchError(err => {
-          debugger;
           if (err.status === 404) {
             return of([]);
           }

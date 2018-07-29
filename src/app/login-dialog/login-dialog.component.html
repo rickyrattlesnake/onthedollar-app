@@ -1,9 +1,10 @@
 <h1 mat-dialog-title> Login or Register </h1>
 <div mat-dialog-content>
+  <p *ngIf="hasGlobalError()">{{errorMessage}}</p>
   <form class="login-form">
     <mat-form-field [hideRequiredMarker]="true">
       <input matInput
-             placeholder="username"
+             placeholder="Username"
              type="text"
              required
              [(ngModel)]="username"
@@ -12,30 +13,31 @@
     </mat-form-field>
     <mat-form-field [hideRequiredMarker]="true">
       <input matInput
-             placeholder="password"
+             placeholder="Password"
              type="password"
              required
              [(ngModel)]="password"
              name="password"
              #passwordModel="ngModel">
     </mat-form-field>
-
-    <button mat-raised-button
-            type="submit"
-            class="login"
-            color="primary"
-            (click)="loginUser(usernameModel, passwordModel)"
-            >Login</button>
-    <button mat-raised-button
-            type="submit"
-            class="register"
-            (click)="registerUser(usernameModel, passwordModel)"
-            color="accent">Register</button>
   </form>
 </div>
-<div mat-dialog-actions>
-  <button mat-raised-button
-          class="close"
+<div mat-dialog-actions
+     fxLayout="column"
+     fxLayoutGap="10px"
+     fxLayoutAlign="center center">
+  <button mat-flat-button
+  type="submit"
+          class="login"
+          color="primary"
+          (click)="loginUser(usernameModel, passwordModel)">Login</button>
+  <button mat-flat-button
+  type="submit"
+          class="register"
+          (click)="registerUser(usernameModel, passwordModel)"
+          color="accent">Register</button>
+  <button mat-flat-button
+  class="close"
           (click)="close()"
           color="warn">Cancel</button>
 </div>
