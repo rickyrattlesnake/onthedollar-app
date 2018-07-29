@@ -34,7 +34,8 @@ export class LoginDialogComponent {
 
   notifyUser(message: string) {
     this.notifier.open(message, '', {
-      duration: 3000
+      duration: 3000,
+      panelClass: 'notification-error',
     });
   }
 
@@ -83,9 +84,5 @@ export class LoginDialogComponent {
       password.valid &&
       username.dirty &&
       password.dirty;
-  }
-
-  hasGlobalError() {
-    return this.errorMessage !== '';
   }
 }

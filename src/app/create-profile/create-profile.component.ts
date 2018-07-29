@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProfilesService, CreateProfileInput} from '../services/profiles/profiles.service';
 import { AbstractControl } from '@angular/forms';
@@ -11,8 +11,6 @@ import { MatSnackBar } from '@angular/material';
 })
 export class CreateProfileComponent {
 
-  errorMessage = '';
-
   profile: CreateProfileInput = {
     profileName: '',
     superPercentage: undefined,
@@ -21,7 +19,7 @@ export class CreateProfileComponent {
     fiscalYear: 2019,
   };
 
-  public event: EventEmitter<any> = new EventEmitter();
+  isLoading = false;
 
   constructor(
     public profilesService: ProfilesService,
@@ -32,6 +30,7 @@ export class CreateProfileComponent {
   }
 
   onCancel(): void {
+    this.isLoading = false;
     this.router.navigate(['../dashboard'], {
       relativeTo: this.route
     });
@@ -44,15 +43,17 @@ export class CreateProfileComponent {
       return this.notifyUser(result.error);
     }
 
+    this.isLoading = true;
     this.profilesService.createProfile(this.profile)
       .subscribe(profileId => {
-        this.event.emit({ newProfileId: profileId });
         this.router.navigate(['../dashboard'], {
           relativeTo: this.route
         });
+        this.isLoading = false;
       }, error => {
         console.error('[x] onSubmit ::', error);
         this.notifyUser(error.message);
+        this.isLoading = false;
       });
   }
 
@@ -92,7 +93,8 @@ export class CreateProfileComponent {
 
   notifyUser(message: string) {
     this.notifier.open(message, '', {
-      duration: 3000
+      duration: 3000,
+      panelClass: 'notification-error',
     });
   }
 }
