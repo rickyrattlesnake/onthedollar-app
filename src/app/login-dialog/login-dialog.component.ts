@@ -4,6 +4,7 @@ import { AuthService } from '../services/auth/auth.service';
 import { AbstractControl } from '@angular/forms';
 import { UserService } from '../services/user/user.service';
 import { flatMap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-login-dialog',
@@ -22,7 +23,8 @@ export class LoginDialogComponent {
     public dialogRef: MatDialogRef<LoginDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public loginData: any,
     public auth: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    public notifier: MatSnackBar,
   ) {
   }
 
@@ -30,8 +32,13 @@ export class LoginDialogComponent {
     this.dialogRef.close();
   }
 
+  notifyUser(message: string) {
+    this.notifier.open(message, '', {
+      duration: 3000
+    });
+  }
+
   registerUser(username: AbstractControl, password: AbstractControl) {
-    this.setGlobalError('');
     if (this.validateCredentials(username, password)) {
       return this.userService.registerUser(username.value, password.value)
         .pipe(
@@ -47,13 +54,15 @@ export class LoginDialogComponent {
           this.dialogRef.close();
         }, error => {
           console.error('[x] registerUser ::', error);
+          if (error.error && error.error.message === 'user exists') {
+            this.notifyUser('User already exists');
+          }
         });
     }
 
   }
 
   loginUser(username: AbstractControl, password: AbstractControl) {
-    this.setGlobalError('');
     if (this.validateCredentials(username, password)) {
       return this.auth.login({
           username: this.username,
@@ -64,7 +73,7 @@ export class LoginDialogComponent {
           this.dialogRef.close();
         }, error => {
           console.error('[x] loginUser ::', error);
-          this.setGlobalError('Incorrect Username or Password');
+          this.notifyUser('Incorrect Username or Password');
         });
     }
   }
@@ -74,10 +83,6 @@ export class LoginDialogComponent {
       password.valid &&
       username.dirty &&
       password.dirty;
-  }
-
-  setGlobalError(message: string) {
-    this.errorMessage = message;
   }
 
   hasGlobalError() {

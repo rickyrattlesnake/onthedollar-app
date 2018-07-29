@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProfilesService, CreateProfileInput} from '../services/profiles/profiles.service';
 import { AbstractControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-create-profile',
@@ -26,23 +27,21 @@ export class CreateProfileComponent {
     public profilesService: ProfilesService,
     private router: Router,
     private route: ActivatedRoute,
+    public notifier: MatSnackBar,
   ) {
   }
 
   onCancel(): void {
-    this.setGlobalError('');
     this.router.navigate(['../dashboard'], {
       relativeTo: this.route
     });
   }
 
   onSubmit(): void {
-    this.setGlobalError('');
-
     const result = this.validateProfile(this.profile);
 
     if (!result.valid) {
-      return this.setGlobalError(result.error);
+      return this.notifyUser(result.error);
     }
 
     this.profilesService.createProfile(this.profile)
@@ -53,7 +52,7 @@ export class CreateProfileComponent {
         });
       }, error => {
         console.error('[x] onSubmit ::', error);
-        this.setGlobalError(error.message);
+        this.notifyUser(error.message);
       });
   }
 
@@ -91,11 +90,9 @@ export class CreateProfileComponent {
     };
   }
 
-  hasGlobalError() {
-    return this.errorMessage !== '';
-  }
-
-  setGlobalError(message: string) {
-    this.errorMessage = message;
+  notifyUser(message: string) {
+    this.notifier.open(message, '', {
+      duration: 3000
+    });
   }
 }

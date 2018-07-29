@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
     // https://github.com/angular/angular/issues/14748
     setTimeout(() => {
       this.dialog.open(LoginDialogComponent, {
-          width: '600px',
+          width: '400px',
           data: { title: 'Login' }
         })
         .componentInstance.event.subscribe(result => {

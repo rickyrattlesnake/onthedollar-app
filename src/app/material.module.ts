@@ -11,7 +11,8 @@ import {
   MatInputModule,
   MatSelectModule,
   MatSlideToggleModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatSnackBarModule
 } from '@angular/material';
 
 const modulesToExport = [
@@ -27,6 +28,7 @@ const modulesToExport = [
   MatSelectModule,
   MatSlideToggleModule,
   MatExpansionModule,
+  MatSnackBarModule
 ];
 
 @NgModule({

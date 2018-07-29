@@ -1,9 +1,6 @@
 <div class="container">
   <h2 mat-dialog-title>New Income Profile</h2>
   <div mat-dialog-content>
-    <div *ngIf="hasGlobalError()">
-      <p>{{errorMessage}}</p>
-    </div>
     <form class="create-profile-form"
           (ngSubmit)="onSubmit()">
       <mat-form-field [hideRequiredMarker]="true">

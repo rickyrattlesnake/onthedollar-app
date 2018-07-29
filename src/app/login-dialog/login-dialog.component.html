@@ -1,6 +1,5 @@
 <h1 mat-dialog-title> Login or Register </h1>
 <div mat-dialog-content>
-  <p *ngIf="hasGlobalError()">{{errorMessage}}</p>
   <form class="login-form">
     <mat-form-field [hideRequiredMarker]="true">
       <input matInput
@@ -27,17 +26,17 @@
      fxLayoutGap="10px"
      fxLayoutAlign="center center">
   <button mat-flat-button
-  type="submit"
+          type="submit"
           class="login"
           color="primary"
           (click)="loginUser(usernameModel, passwordModel)">Login</button>
   <button mat-flat-button
-  type="submit"
+          type="submit"
           class="register"
           (click)="registerUser(usernameModel, passwordModel)"
           color="accent">Register</button>
   <button mat-flat-button
-  class="close"
+          class="close"
           (click)="close()"
           color="warn">Cancel</button>
 </div>
