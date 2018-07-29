@@ -67,6 +67,10 @@
       </div>
     </mat-toolbar>
     <main>
+      <mat-progress-bar color="accent"
+        class="progress-bar"
+        [class.hide]="!showProgressBar"
+        mode="indeterminate"></mat-progress-bar>
       <router-outlet></router-outlet>
     </main>
   </mat-sidenav-content>

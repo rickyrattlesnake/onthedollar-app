@@ -41,3 +41,7 @@ a:active {
   margin: 0;
   width: 85%;
 }
+
+.progress-bar.hide {
+  visibility: hidden;
+}

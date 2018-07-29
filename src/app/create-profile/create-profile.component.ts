@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ProfilesService, CreateProfileInput} from '../services/profiles/profiles.service';
 import { AbstractControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
+import { LoadingEventsService } from '../services/loading-events/loading-events.service';
 
 @Component({
   selector: 'app-create-profile',
@@ -26,6 +27,7 @@ export class CreateProfileComponent {
     private router: Router,
     private route: ActivatedRoute,
     public notifier: MatSnackBar,
+    private loadingService: LoadingEventsService
   ) {
   }
 
@@ -44,16 +46,19 @@ export class CreateProfileComponent {
     }
 
     this.isLoading = true;
+    this.loadingService.startLoading();
     this.profilesService.createProfile(this.profile)
       .subscribe(profileId => {
         this.router.navigate(['../dashboard'], {
           relativeTo: this.route
         });
         this.isLoading = false;
+        this.loadingService.stopLoading();
       }, error => {
         console.error('[x] onSubmit ::', error);
         this.notifyUser(error.message);
         this.isLoading = false;
+        this.loadingService.stopLoading();
       });
   }
 

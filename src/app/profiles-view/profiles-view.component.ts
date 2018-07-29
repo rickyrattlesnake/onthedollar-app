@@ -5,6 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import { EventType as AuthEventType, AuthService } from '../services/auth/auth.service';
 import { ProfilesService, Profile } from '../services/profiles/profiles.service';
 import { Router } from '@angular/router';
+import { LoadingEventsService } from '../services/loading-events/loading-events.service';
 
 @Component({
   selector: 'app-profiles-view',
@@ -14,7 +15,9 @@ import { Router } from '@angular/router';
 export class ProfilesViewComponent implements OnInit {
   constructor(
     public authService: AuthService,
-    public profilesService: ProfilesService) { }
+    public profilesService: ProfilesService,
+    private loadingService: LoadingEventsService,
+  ) { }
 
 
   displayedColumns = [
@@ -57,18 +60,23 @@ export class ProfilesViewComponent implements OnInit {
   }
 
   deleteProfile(profileId) {
+    this.loadingService.startLoading();
     this.profilesService.deleteProfile(profileId)
       .subscribe(() => {
         // this.dataSource = new ProfileDataSource(this.profilesService);
+        this.loadingService.stopLoading();
         this.getProfiles();
       });
   }
 
   getProfiles(): void {
+    this.loadingService.startLoading();
     this.profilesService.getAllIncomeProfilesForCurrentUser()
       .subscribe(profiles => {
+        this.loadingService.stopLoading();
         this.profiles = profiles;
       }, error => {
+        this.loadingService.stopLoading();
         this.profiles = [];
       });
   }

@@ -3,6 +3,7 @@ import { AuthService } from './services/auth/auth.service';
 import { MatDialog } from '@angular/material';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { Router } from '@angular/router';
+import { LoadingEventsService, LoadingState } from './services/loading-events/loading-events.service';
 
 
 @Component({
@@ -13,16 +14,27 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'onthedollar-app';
 
+  showProgressBar = false;
+
   constructor(
     public auth: AuthService,
     private dialog: MatDialog,
-    private router: Router) {
+    private router: Router,
+    private loadingService: LoadingEventsService) {
   }
 
   ngOnInit() {
     if (!this.auth.isAuthenticated()) {
       this.openLoginDialog();
     }
+
+    this.loadingService.events.subscribe(event => {
+      if (event === LoadingState.LOADING) {
+        this.showProgressBar = true;
+      } else {
+        this.showProgressBar = false;
+      }
+    });
   }
 
   openLoginDialog(): void {
