@@ -18,3 +18,20 @@ a {
   cursor: pointer;
   text-decoration: none;
 }
+
+/* div.profile-summary {
+  width: 600px;
+}
+
+span.profile-summary-item {
+  width: 300px;
+} */
+
+.profile-details {
+  width: 100%;
+}
+
+.profile-details .profile-item {
+  display: flex;
+  justify-content: space-between;
+}

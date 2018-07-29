@@ -3,12 +3,13 @@
   flex-direction: column;
 }
 
-.create-profile-form> * {
+.create-profile-form > * {
   width: 100%;
+  margin-bottom: 10px;
 }
 
-.close{
-  width: 100%;
+.create-profile-form .superannuation-toggle {
+  margin-bottom: 25px;
 }
 
 .container {

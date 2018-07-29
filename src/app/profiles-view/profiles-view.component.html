@@ -14,23 +14,40 @@
             <ng-container *ngFor="let profile of profiles; trackBy trackProfiles">
               <mat-expansion-panel>
                 <mat-expansion-panel-header>
-                  {{profile.profileName}}
+                  <mat-panel-title>
+                    {{profile.profileName}}
+                  </mat-panel-title>
                 </mat-expansion-panel-header>
-                <p>Net Income:
-                  <span>{{profile.netIncome | number:'0.2-2' }}</span>
-                </p>
-                <p>Super Amount:
-                  <span>{{profile.superAmount | number:'0.2-2' }}</span>
-                </p>
-                <p>Tax Amount:
-                  <span>{{profile.taxAmount | number:'0.2-2' }}</span>
-                </p>
-                <p>Gross Income:
-                  <span>{{profile.grossIncome | number:'0.2-2' }}</span>
-                </p>
-                <p>Fiscal Year:
-                  <span>{{profile.fiscalYear}}</span>
-                </p>
+                <div class="profile-details">
+                  <p class="profile-item">
+                    <span>Tax Year:</span>
+                    <span>{{profile.fiscalYear}}</span>
+                  </p>
+                  <p class="profile-item">
+                    <span>Gross Income:</span>
+                    <span>${{profile.grossIncome | number:'0.2-2' }}</span>
+                  </p>
+                  <p class="profile-item">
+                    <span>Superannuation:</span>
+                    <span>${{profile.superAmount | number:'0.2-2' }}</span>
+                  </p>
+                  <p class="profile-item">
+                    <span>Gross Income with Superannuation:</span>
+                    <span>${{profile.grossIncome + profile.superAmount | number:'0.2-2' }}</span>
+                  </p>
+                  <p class="profile-item">
+                    <span>Estimated Tax:</span>
+                    <span>${{profile.taxAmount | number:'0.2-2' }}</span>
+                  </p>
+                  <p class="profile-item">
+                    <span>Net Income:</span>
+                    <span>${{profile.netIncome | number:'0.2-2' }}</span>
+                  </p>
+                  <p class="profile-item">
+                    <span>Total Income after Tax (Net Income + Superannuation):</span>
+                    <span>${{profile.netIncome + profile.superAmount | number:'0.2-2' }}</span>
+                  </p>
+                </div>
 
                 <mat-action-row>
                   <a (click)="deleteProfile(profile.profileId)"

@@ -4,7 +4,7 @@
     <mat-nav-list>
       <a mat-list-item
          *ngIf="!auth.isAuthenticated()"
-         (click)="auth.login()">
+         (click)="openLoginDialog()">
         <mat-icon class="icon">input</mat-icon>
         <span class="label">Login</span>
       </a>
