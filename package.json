@@ -13,6 +13,10 @@
     "test": "echo \"unit tests not implemented\"",
     "e2e": "echo \"e2e tests not implemented\""
   },
+  "engines": {
+    "node": "10.1.0",
+    "npm": "5.6.0"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^6.1.0",
