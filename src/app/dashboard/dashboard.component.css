@@ -9,6 +9,7 @@ button.add-profile {
   padding: 0 10px 0 0;
 }
 
-h2.login-help-text {
-  margin: 20px auto;
+.login-help-text {
+  margin: 50px auto;
+  text-align: center;
 }
