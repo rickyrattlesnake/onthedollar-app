@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, throwError, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 const profilesApi = `${environment.apiBaseUrl}/profiles`;
 
 export interface Profile {
+  profileId: string;
   profileName: string;
   superAmount: number;
   grossIncome: number;
@@ -38,7 +39,16 @@ export class ProfilesService {
 
   getAllIncomeProfilesForCurrentUser() {
     const url = `${profilesApi}/income`;
-    return this.http.get<Profile[]>(url);
+    return this.http.get<Profile[]>(url)
+      .pipe(
+        catchError(err => {
+          debugger;
+          if (err.status === 404) {
+            return of([]);
+          }
+          throwError(err);
+        })
+      );
   }
 
   deleteProfile(profileId: string) {

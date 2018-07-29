@@ -2,53 +2,52 @@
   <div fxLayout="row"
        fxLayoutAlign="center center"
        class="content">
-    <mat-card class="card">
+    <mat-card class="card"
+              *ngIf="!isProfileCollectionEmpty(); else emptyProfilesMessage">
       <mat-card-title fxLayout.gt-xs="row"
                       fxLayout.xs="column">
         <h3>Income Profiles</h3>
       </mat-card-title>
       <mat-card-content>
         <div class="profiles-container mat-elevation-z8">
-          <mat-table #table
-                     [dataSource]="dataSource">
-            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            <ng-container matColumnDef="profileName">
-              <mat-header-cell *matHeaderCellDef> Profile </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.profileName}} </mat-cell>
+          <mat-accordion>
+            <ng-container *ngFor="let profile of profiles; trackBy trackProfiles">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  {{profile.profileName}}
+                </mat-expansion-panel-header>
+                <p>Net Income:
+                  <span>{{profile.netIncome | number:'0.2-2' }}</span>
+                </p>
+                <p>Super Amount:
+                  <span>{{profile.superAmount | number:'0.2-2' }}</span>
+                </p>
+                <p>Tax Amount:
+                  <span>{{profile.taxAmount | number:'0.2-2' }}</span>
+                </p>
+                <p>Gross Income:
+                  <span>{{profile.grossIncome | number:'0.2-2' }}</span>
+                </p>
+                <p>Fiscal Year:
+                  <span>{{profile.fiscalYear}}</span>
+                </p>
+
+                <mat-action-row>
+                  <a (click)="deleteProfile(profile.profileId)"
+                     type="button">
+                    <mat-icon>delete</mat-icon>
+                  </a>
+                </mat-action-row>
+              </mat-expansion-panel>
             </ng-container>
-            <ng-container matColumnDef="netIncome">
-              <mat-header-cell *matHeaderCellDef> Net Income </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.netIncome | number:'0.2-2' }} </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="superAmount">
-              <mat-header-cell *matHeaderCellDef> Superannuation </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.superAmount | number:'0.2-2' }} </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="taxAmount">
-              <mat-header-cell *matHeaderCellDef> Total Tax </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.taxAmount | number:'0.2-2' }} </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="grossIncome">
-              <mat-header-cell *matHeaderCellDef> Gross Income </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.grossIncome | number:'0.2-2' }} </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="fiscalYear">
-              <mat-header-cell *matHeaderCellDef> Tax Year </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.fiscalYear}} </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="delete">
-              <mat-header-cell *matHeaderCellDef></mat-header-cell>
-              <mat-cell *matCellDef="let element">
-                <a (click)="deleteProfile(element.profileId)"
-                   type="button">
-                  <mat-icon>delete</mat-icon>
-                </a>
-              </mat-cell>
-            </ng-container>
-          </mat-table>
+          </mat-accordion>
         </div>
       </mat-card-content>
     </mat-card>
+    <ng-template #emptyProfilesMessage>
+      <p>
+        Create some profiles!
+      </p>
+    </ng-template>
   </div>
 </div>

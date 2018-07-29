@@ -11,34 +11,26 @@ import {
   MatInputModule,
   MatSelectModule,
   MatSlideToggleModule,
+  MatExpansionModule
 } from '@angular/material';
 
+const modulesToExport = [
+  MatSidenavModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatListModule,
+  MatCardModule,
+  MatButtonModule,
+  MatTableModule,
+  MatDialogModule,
+  MatInputModule,
+  MatSelectModule,
+  MatSlideToggleModule,
+  MatExpansionModule,
+];
+
 @NgModule({
-  imports: [
-    MatSidenavModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatListModule,
-    MatCardModule,
-    MatButtonModule,
-    MatTableModule,
-    MatDialogModule,
-    MatInputModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-  ],
-  exports: [
-    MatSidenavModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatListModule,
-    MatCardModule,
-    MatButtonModule,
-    MatTableModule,
-    MatDialogModule,
-    MatInputModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-  ]
+  imports: modulesToExport,
+  exports: modulesToExport,
 })
 export class MaterialModule {}

@@ -3,7 +3,7 @@ import { DataSource } from '@angular/cdk/table';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { EventType as AuthEventType, AuthService } from '../services/auth/auth.service';
-import { ProfilesService } from '../services/profiles/profiles.service';
+import { ProfilesService, Profile } from '../services/profiles/profiles.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -26,48 +26,56 @@ export class ProfilesViewComponent implements OnInit {
     'fiscalYear',
     'delete'
   ];
-  dataSource: ProfileDataSource | null = null;
+  // dataSource: ProfileDataSource | null = null;
+  profiles: Profile[] = [];
+
+  trackProfiles(index: number, profile: Profile) {
+    return profile.profileId;
+  }
 
   ngOnInit() {
     this.authService.events
       .subscribe(evt => {
         if (evt === AuthEventType.LOGIN) {
-          this.dataSource = new ProfileDataSource(this.profilesService);
+          // this.dataSource = new ProfileDataSource(this.profilesService);
+          this.getProfiles();
         }
 
         if (evt === AuthEventType.LOGOUT) {
-          this.dataSource = null;
+          // this.dataSource = null;
+          this.profiles = [];
         }
       });
 
-    this.dataSource = new ProfileDataSource(this.profilesService);
+    // this.dataSource = new ProfileDataSource(this.profilesService);
+    this.getProfiles();
+
+  }
+
+  isProfileCollectionEmpty() {
+    return this.profiles.length === 0;
   }
 
   deleteProfile(profileId) {
     this.profilesService.deleteProfile(profileId)
       .subscribe(() => {
-        this.dataSource = new ProfileDataSource(this.profilesService);
+        // this.dataSource = new ProfileDataSource(this.profilesService);
+        this.getProfiles();
       });
   }
+
+  getProfiles(): void {
+    this.profilesService.getAllIncomeProfilesForCurrentUser()
+      .subscribe(profiles => {
+        debugger;
+        this.profiles = profiles;
+      }, error => {
+        debugger;
+        this.profiles = [];
+      });
+  }
+
+
 }
 
-export class ProfileDataSource extends DataSource<any> {
-  constructor(private profilesService: ProfilesService) {
-    super();
-  }
-
-  connect() {
-    return this.profilesService.getAllIncomeProfilesForCurrentUser()
-      .pipe(
-        catchError(error => {
-          if (error.status === 404) {
-            return [];
-          }
-          throw error;
-        })
-      );
-  }
-
-  disconnect() {
-  }
-}
+//

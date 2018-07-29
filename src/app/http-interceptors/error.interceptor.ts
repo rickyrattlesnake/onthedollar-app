@@ -17,9 +17,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             console.warn('[~] ErrorInterceptor :: 401');
             this.auth.logout();
           }
-
-          const error = err.error.message || err.statusCode;
-          return throwError(error);
+          return throwError(err);
         }))
   }
 }
