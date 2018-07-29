@@ -1,4 +1,10 @@
-a {
+.controls a {
   cursor: pointer;
   text-decoration: none;
+  color: inherit;
+}
+
+button.add-profile {
+  margin: 10px auto;
+  padding: 0 10px 0 0;
 }

@@ -21,7 +21,7 @@ import { ProfilesViewComponent } from './profiles-view/profiles-view.component';
     DashboardComponent,
     LoginDialogComponent,
     CreateProfileComponent,
-    ProfilesViewComponent
+    ProfilesViewComponent,
   ],
   imports: [
     BrowserModule,

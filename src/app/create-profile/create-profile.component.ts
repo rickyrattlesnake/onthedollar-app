@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ProfilesService } from '../services/profiles/profiles.service';
+import { ProfilesService, CreateProfileInput} from '../services/profiles/profiles.service';
+import { AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-create-profile',
@@ -9,7 +10,9 @@ import { ProfilesService } from '../services/profiles/profiles.service';
 })
 export class CreateProfileComponent {
 
-  profile = {
+  errorMessage = '';
+
+  profile: CreateProfileInput = {
     profileName: '',
     superPercentage: undefined,
     incomeAmount: undefined,
@@ -27,18 +30,72 @@ export class CreateProfileComponent {
   }
 
   onCancel(): void {
+    this.setGlobalError('');
     this.router.navigate(['../dashboard'], {
       relativeTo: this.route
     });
   }
 
   onSubmit(): void {
+    this.setGlobalError('');
+
+    const result = this.validateProfile(this.profile);
+
+    if (!result.valid) {
+      return this.setGlobalError(result.error);
+    }
+
     this.profilesService.createProfile(this.profile)
       .subscribe(profileId => {
         this.event.emit({ newProfileId: profileId });
         this.router.navigate(['../dashboard'], {
           relativeTo: this.route
         });
-      })
+      }, error => {
+        console.error('[x] onSubmit ::', error);
+        this.setGlobalError(error.message);
+      });
+  }
+
+  validateProfile(profile: CreateProfileInput): { error?: string, valid: boolean } {
+    if (typeof profile.profileName !== 'string' || profile.profileName.length === 0) {
+      return {
+        valid: false,
+        error: 'Please provide a profile name',
+      };
+    }
+
+    if (typeof profile.superPercentage !== 'number' || profile.superPercentage < 9.5) {
+      return {
+        valid: false,
+        error: 'Please provide a Superannuation percentage at 9.5% or more',
+      };
+    }
+
+    if (typeof profile.incomeAmount !== 'number' || profile.incomeAmount <= 0) {
+      return {
+        valid: false,
+        error: 'Please provide an Income amount above $0',
+      };
+    }
+
+    if (typeof profile.fiscalYear !== 'number' || profile.fiscalYear <= 0) {
+      return {
+        valid: false,
+        error: 'Tax year must be valid',
+      };
+    }
+
+    return {
+      valid: true,
+    };
+  }
+
+  hasGlobalError() {
+    return this.errorMessage !== '';
+  }
+
+  setGlobalError(message: string) {
+    this.errorMessage = message;
   }
 }
