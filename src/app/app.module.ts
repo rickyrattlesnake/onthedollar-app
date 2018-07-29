@@ -13,13 +13,15 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from './http-interceptors';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
+import { ProfilesViewComponent } from './profiles-view/profiles-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     LoginDialogComponent,
-    CreateProfileComponent
+    CreateProfileComponent,
+    ProfilesViewComponent
   ],
   imports: [
     BrowserModule,

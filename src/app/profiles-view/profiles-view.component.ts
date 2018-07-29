@@ -4,20 +4,17 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { EventType as AuthEventType, AuthService } from '../services/auth/auth.service';
 import { ProfilesService } from '../services/profiles/profiles.service';
-import { CreateProfileComponent } from '../create-profile/create-profile.component';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-profiles-view',
+  templateUrl: './profiles-view.component.html',
+  styleUrls: ['./profiles-view.component.css']
 })
-export class DashboardComponent implements OnInit {
-
+export class ProfilesViewComponent implements OnInit {
   constructor(
     public authService: AuthService,
-    public profilesService: ProfilesService,
-    private router: Router, ) { }
+    public profilesService: ProfilesService) { }
 
 
   displayedColumns = [

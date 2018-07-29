@@ -14,9 +14,8 @@ export class ErrorInterceptor implements HttpInterceptor {
       .pipe(
         catchError(err => {
           if (err.status === 401) {
-            console.log('[!] ErrorInterceptor :: 401 caught');
+            console.warn('[~] ErrorInterceptor :: 401');
             this.auth.logout();
-            location.reload(true);
           }
 
           const error = err.error.message || err.statusCode;
