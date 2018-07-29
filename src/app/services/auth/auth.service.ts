@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { LoadingEventsService } from '../loading-events/loading-events.service';
 
 const authApi = `${environment.apiBaseUrl}/auth`;
 
@@ -25,7 +26,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router) { }
+    private router: Router,
+    private loadingService: LoadingEventsService) { }
 
   login({ username, password }) {
     const url = `${authApi}/session`;
@@ -41,6 +43,8 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('access_token');
+    // preemptive turn off loading
+    this.loadingService.stopLoading();
     this.events.emit(EventType.LOGOUT);
   }
 
